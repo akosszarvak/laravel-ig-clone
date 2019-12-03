@@ -12,12 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts/app');
 });
 
 Auth::routes();
 
 Route::get('/p/create', 'PostsController@create');
+Route::get('/p/{post}', 'PostsController@show');
 Route::post('/p', 'PostsController@store');
 
 Route::get('/profile/{user}', 'ProfileController@index')->name('profile.show');
+Route::get('/profile/{user}/edit', 'ProfileController@edit')->name('profile.edit');
+Route::patch('/profile/{user}', 'ProfileController@update')->name('profile.update');
