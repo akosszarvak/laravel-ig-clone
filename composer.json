@@ -15,6 +15,9 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^1.1"
     },
+    "provide": {
+        "ext-imagick": "*"
+    },
     "require-dev": {
         "facade/ignition": "^1.4",
         "fzaninotto/faker": "^1.4",
