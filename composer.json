@@ -9,12 +9,13 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "ext-gd": "*",
         "fideloper/proxy": "^4.0",
         "intervention/image": "^2.5",
         "laravel/framework": "^6.2",
+        "laravel/telescope": "^2.1",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^1.1",
-        "ext-gd": "*"
+        "laravel/ui": "^1.1"
     },
     "provide": {
         "ext-imagick": "*"

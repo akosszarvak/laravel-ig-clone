@@ -6,6 +6,7 @@ use App\User;
 
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Intervention\Image\Facades\Cache;
 
 
 class ProfileController extends Controller
@@ -13,12 +14,26 @@ class ProfileController extends Controller
 
 
 
-    public function index( $user)
+    public function index(User $user)
     {
-        // If not found, it gives error404 instead of error500
-        $user =User::findOrFail($user);
+
+
+        $follows = (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
         
-        return view('profiles/index', ['user' => $user]);
+        $postCount = $user->posts->count();
+        $followerCount = $user->profile->followers->count();
+        $followingCount = $user->following->count();
+
+
+        // $postCount =Cache::remember('count.posts.' . $user->id,
+        //  now()->addSeconds(30),
+        //   function () use ($user) {
+        //    return $user->posts->count();
+        // });
+        // $followerCount = $user->profile->followers->count();
+        // $followingCount = $use->following->count();
+
+        return view('profiles/index', compact('user', 'follows' , 'postCount', 'followerCount', 'followingCount'));
     }
 
 
@@ -46,11 +61,14 @@ class ProfileController extends Controller
 
             $image = Image::make(public_path("storage/{$imagePath}"))->fit(1000,1000);
             $image->save();
+
+           $imageArray = ['image' => $imagePath];
         }
 
         auth()->user()->profile->update(array_merge(
             $data,
-            ['image' => $imagePath]
+            $imageArray ?? []
+           
         ));
 
         return redirect("/profile/{$user->id}");
